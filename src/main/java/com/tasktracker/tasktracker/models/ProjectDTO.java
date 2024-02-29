@@ -1,4 +1,4 @@
-package com.tasktracker.tasktracker.data;
+package com.tasktracker.tasktracker.models;
 
 import lombok.Data;
 import lombok.NonNull;

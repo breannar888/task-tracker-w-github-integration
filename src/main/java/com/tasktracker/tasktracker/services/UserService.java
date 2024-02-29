@@ -1,6 +1,6 @@
 package com.tasktracker.tasktracker.services;
 
-import com.tasktracker.tasktracker.data.User;
+import com.tasktracker.tasktracker.models.User;
 import org.springframework.stereotype.Service;
 
 @Service

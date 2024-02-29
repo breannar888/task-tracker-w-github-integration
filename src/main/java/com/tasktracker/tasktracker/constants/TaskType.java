@@ -1,4 +1,4 @@
-package com.tasktracker.tasktracker.contants;
+package com.tasktracker.tasktracker.constants;
 
 public enum TaskType {
     STORY,

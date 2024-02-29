@@ -1,6 +1,6 @@
-package com.tasktracker.tasktracker.data;
+package com.tasktracker.tasktracker.models;
 
-import com.tasktracker.tasktracker.contants.TaskType;
+import com.tasktracker.tasktracker.constants.TaskType;
 import lombok.Data;
 import lombok.NonNull;
 import org.bson.types.ObjectId;
