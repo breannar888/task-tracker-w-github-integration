@@ -28,15 +28,11 @@ public class MongoUtil {
                 .build();
 
         MongoClientSettings settings = MongoClientSettings.builder()
-                .applyConnectionString(new ConnectionString(getMongoUri()))
+                .applyConnectionString(new ConnectionString(mongoUri))
                 .serverApi(serverApi)
                 .build();
 
         return MongoClients.create(settings);
     }
 
-    private String getMongoUri() {
-        System.out.println(mongoUri);
-        return mongoUri;
-    }
 }
