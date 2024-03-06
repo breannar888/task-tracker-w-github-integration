@@ -3,16 +3,12 @@ package com.tasktracker.tasktracker.service;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.MongoIterable;
 import com.mongodb.client.model.Filters;
 import com.tasktracker.tasktracker.models.Project;
 import com.tasktracker.tasktracker.services.ProjectService;
 import com.tasktracker.tasktracker.utils.MongoUtil;
-import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;
-import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -22,7 +18,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import static  org.assertj.core.api.Assertions.assertThat;
@@ -126,12 +121,11 @@ public class ProjectServiceTest {
         verify(findIterable, times(1)).first();
     }
 //failing test case needs further work
-//    @Test
+    @Test
     public void when_projectServiceCallsGetProjectsByUserId_thenReturnsListOfProjects() {
         MongoClient mongoClient = mock(MongoClient.class);
         MongoCollection<Project> mongoCollection = mock(MongoCollection.class);
-        FindIterable<Project> findIterable = mock(FindIterable.class);
-        MongoCursor<Project> cursor = mock(MongoCursor.class);
+        FindIterable findIterable = mock(FindIterable.class);
         MongoDatabase mongoDatabase = mock(MongoDatabase.class);
 
         final String key = "userId";
@@ -157,24 +151,22 @@ public class ProjectServiceTest {
         when(mongoClient.getDatabase(eq(dbName))).thenReturn(mongoDatabase);
         when(mongoDatabase.getCollection("Project", Project.class)).thenReturn(mongoCollection);
         when(mongoCollection.withCodecRegistry(any(CodecRegistry.class))).thenReturn(mongoCollection);
-        //TODO: this mock is returning null, might be step missing. Need to find out what iterator does
         when(mongoCollection.find(Filters.eq(key, userID))).thenReturn(findIterable);
-        when(findIterable.iterator()).thenReturn(cursor);
-        when(cursor.hasNext()).thenReturn(true).thenReturn(true).thenReturn(false);
-        when(cursor.next()).thenReturn(project1).thenReturn(project2);
+        when(findIterable.into(new ArrayList<>())).thenReturn(projects);
 
-        final List<Project> result = projectService.getProjectsByUserId(userID.toHexString());
+        List<Project> result = projectService.getProjectsByUserId(userID.toHexString());
 
         assertThat(result)
                 .isNotNull()
                 .isEqualTo(projects);
+
+        System.out.println("result: " + result + " / projects: " + projects);
 
         verify(mongoUtil, times(1)).mongoClient();
         verify(mongoClient, times(1)).getDatabase(eq(dbName));
         verify(mongoCollection, times(1)).withCodecRegistry(any(CodecRegistry.class));
         verify(mongoCollection, times(1)).find(Filters.eq(key, userID));
         verify(findIterable, times(1)).into(any(List.class));
-        verify(findIterable, times(1)).first();
     }
 
 }
