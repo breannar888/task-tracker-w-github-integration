@@ -24,22 +24,22 @@ public class ProjectController {
     }
 
     @GetMapping("/getProjectById")
-    public Project getProjectById(@RequestParam String id) {
+    public Project getProjectById(@RequestParam String id) throws Exception {
         return projectService.getProjectByProjectId(id);
     }
 
     @GetMapping("/getProjectByName")
-    public Project getProjectByName(@RequestParam String name) {
+    public Project getProjectByName(@RequestParam String name) throws Exception {
         return projectService.getProjectByName(name);
     }
 
     @GetMapping("/getAllProjectByUserId")
-    public List<Project> getProjectByUserId(@RequestParam String userId) {
+    public List<Project> getProjectByUserId(@RequestParam String userId) throws Exception {
         return projectService.getProjectsByUserId(userId);
     }
 
     @PostMapping("/createProject")
-    public Project createProject(@RequestBody Project project) {
+    public Project createProject(@RequestBody Project project) throws Exception {
         return projectService.createProject(project);
     }
 }

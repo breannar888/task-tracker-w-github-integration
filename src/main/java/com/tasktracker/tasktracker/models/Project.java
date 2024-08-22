@@ -9,30 +9,31 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.bson.BsonType;
-import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonRepresentation;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.domain.Persistable;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
+//TODO: need to validate values on creation AND read
 @AllArgsConstructor
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
 @Data
+@Document(collection = "Project")
 public class Project implements Serializable{
 
     @NonNull
-    @BsonId
+    @Id
     @BsonRepresentation(BsonType.OBJECT_ID)
     @Size(min=24, max = 24, message = "Invalid ID")
-    private String projectID;
+    private String id;
 
     @NonNull
     @Size(min = 3, max = 35, message = "Title too long, must be less than 50 characters")
@@ -41,20 +42,20 @@ public class Project implements Serializable{
     @NonNull
     @DateTimeFormat
     @CreatedDate
-    private LocalDate createdOn;
+    private Date createdAt;
 
     @NonNull
     @DateTimeFormat
     @LastModifiedDate
-    private LocalDate updatedOn;
+    private Date updatedAt;
 
     @NonNull
-    @BsonRepresentation(BsonType.OBJECT_ID)
+    @Field("userId")
     private String userId;
 
-    //TODO: update authUsers to store String value of ObjectID
+    //TODO: store in mongodb as ArrayList<ObjectId>
     @NotNull
-    private ArrayList<ObjectId> authUsers;
+    private ArrayList<String> authUsers;
 
     @NonNull
     private ArrayList<Task> tasks;
@@ -62,5 +63,5 @@ public class Project implements Serializable{
     @NotEmpty
     private ArrayList<String> permissions;
 
-    private String githubRepo;
+    private String gitRepo;
 }
